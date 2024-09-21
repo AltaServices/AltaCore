@@ -1,4 +1,4 @@
-name: AtlaCore
+name: AltaCore
 version: '1.0'
-main: dev.atla.AtlaCore
-api-version: '1.20'
+main: dev.alta.AltaCore
+api-version: '1.8'

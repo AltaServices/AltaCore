@@ -1,1 +1,1 @@
-rootProject.name = "AtlaCore"
+rootProject.name = "AltaCore"
