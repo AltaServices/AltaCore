@@ -1,0 +1,14 @@
+package dev.atla
+
+import org.bukkit.plugin.java.JavaPlugin
+
+class AtlaCore : JavaPlugin() {
+
+    override fun onEnable() {
+        // Plugin startup logic
+    }
+
+    override fun onDisable() {
+        // Plugin shutdown logic
+    }
+}
