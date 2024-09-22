@@ -9,6 +9,7 @@ import java.util.Properties
 import java.util.UUID
 import jakarta.mail.*
 import jakarta.mail.internet.*
+import org.bukkit.entity.Player
 
 /**
  * @author Cupoftea
@@ -16,13 +17,15 @@ import jakarta.mail.internet.*
  */
 
 object Services {
-    fun registerPlayer(uuid: UUID, email: String) {
+    fun registerPlayer(player: Player, email: String) {
         val token = generateToken()
+
+        Mongo.storeUserInfo(player.uniqueId, player.name, email)
 
         val collection: MongoCollection<Document> = Mongo.getOrCreateCollection("altaCore")
         val document = Document()
 
-        document.append("pendingRegistrations.$token", uuid.toString())
+        document.append("pendingRegistrations.$token", player.uniqueId.toString())
 
         collection.updateOne(
             document,

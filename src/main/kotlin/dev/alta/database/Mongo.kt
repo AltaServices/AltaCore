@@ -6,6 +6,7 @@ import com.mongodb.client.MongoCollection
 import com.mongodb.client.MongoDatabase
 import dev.alta.AltaCore
 import org.bson.Document
+import java.util.UUID
 
 object Mongo {
     private lateinit var database: MongoDatabase
@@ -42,5 +43,15 @@ object Mongo {
         if (::client.isInitialized) {
             client.close()
         }
+    }
+
+    fun storeUserInfo(uuid: UUID, username: String, email: String) {
+        val collection = getOrCreateCollection("users")
+        val document = Document()
+            .append("uuid", uuid.toString())
+            .append("username", username)
+            .append("email", email)
+
+        collection.insertOne(document)
     }
 }
