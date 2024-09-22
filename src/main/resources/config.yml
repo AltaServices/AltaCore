@@ -1,3 +1,4 @@
+#smtp
 smtp:
   host: smtp.gmail.com
   port: 587
@@ -7,19 +8,4 @@ smtp:
 
 #db config
 database:
-  host: localhost
-  port: 3306
-  name: alta_database
-  username: alta_user
-  password: your_database_password
-
-#change messages
-messages:
-  register-command-usage: "&cUsage: /register <email>"
-  invalid-email: "&cInvalid email address. Please try again."
-  registration-email-sent: "&aRegistration email sent. Please check your inbox to complete the process."
-  registration-failed: "&cFailed to send registration email. Please try again later or contact an administrator."
-
-#the website url for the main site
-website:
-  url: https://your-website.com
+  uri: mongodb://alta_user:your_database_password@localhost:27017/

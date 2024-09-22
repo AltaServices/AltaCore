@@ -1,5 +1,9 @@
 package dev.alta
 
+import com.mongodb.client.MongoCollection
+import com.mongodb.client.model.UpdateOptions
+import dev.alta.database.Mongo
+import org.bson.Document
 import org.bukkit.configuration.file.FileConfiguration
 import java.util.Properties
 import java.util.UUID
@@ -7,16 +11,24 @@ import javax.mail.*
 import javax.mail.internet.*
 
 /**
- * @author TastyCake
+ * @author Cupoftea
  * @date 9/21/2024
  */
 object Services {
     fun registerPlayer(uuid: UUID, email: String) {
-        val plugin = AltaCore.instance
         val token = generateToken()
-        val config: FileConfiguration = plugin.config
-        config.set("pendingRegistrations.$token", uuid.toString())
-        plugin.saveConfig()
+
+        val collection: MongoCollection<Document> = Mongo.getOrCreateCollection("altaCore")
+        val document = Document()
+
+        document.append("pendingRegistrations.$token", uuid.toString())
+
+        collection.updateOne(
+            document,
+            Document("\$set", document),
+            UpdateOptions().upsert(true)
+        )
+
         sendRegistrationEmail(email, token)
     }
 
