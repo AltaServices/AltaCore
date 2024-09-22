@@ -8,4 +8,9 @@ smtp:
 
 #db config
 database:
-  uri: mongodb://alta_user:your_database_password@localhost:27017/
+  uri: mongodb://username:password@localhost:27017
+  name: altacore
+
+# Website configuration
+website:
+  url: http://localhost:3000

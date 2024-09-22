@@ -7,26 +7,19 @@ import com.mongodb.client.MongoDatabase
 import dev.alta.AltaCore
 import org.bson.Document
 
-/**
- * @author TastyCake
- * @date 9/21/2024
- */
 object Mongo {
-    lateinit var database: MongoDatabase
-    lateinit var client: MongoClient
+    private lateinit var database: MongoDatabase
+    private lateinit var client: MongoClient
 
-    init {
-        val plugin = AltaCore.instance
-        try {
-            val host = plugin.config.getString("database.host")
-            val port = plugin.config.getInt("database.port")
-            val databaseName = plugin.config.getString("database.name")
+    fun initialize(plugin: AltaCore) {
+        val uri = plugin.config.getString("database.uri")
+            ?: throw IllegalStateException("Database URI is not set in the config")
+        val databaseName = plugin.config.getString("database.name")
+            ?: throw IllegalStateException("Database name is not set in the config")
 
-            client = MongoClients.create("mongodb://$host:$port")
-            database = client.getDatabase(databaseName)
-        } catch (e: Exception) {
-            plugin.logger.severe("Couldn't connect to Mongo Database!")
-        }
+        client = MongoClients.create(uri)
+        database = client.getDatabase(databaseName)
+        plugin.logger.info("Successfully connected to MongoDB database")
     }
 
     fun getOrCreateCollection(name: String): MongoCollection<Document> {
@@ -35,5 +28,11 @@ object Mongo {
             database.createCollection(name)
         }
         return database.getCollection(name)
+    }
+
+    fun close() {
+        if (::client.isInitialized) {
+            client.close()
+        }
     }
 }

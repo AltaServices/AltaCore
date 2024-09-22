@@ -61,7 +61,13 @@ object Services {
                 setFrom(InternetAddress(from))
                 setRecipients(Message.RecipientType.TO, InternetAddress.parse(email))
                 subject = "Complete Your Registration"
-                val registrationLink = "${plugin.config.getString("website.url")}/register?token=$token"
+                val websiteUrl = plugin.config.getString("website.url") ?: "http://localhost"
+                val websitePort = plugin.config.getInt("website.port", -1)
+                val registrationLink = if (websitePort > 0) {
+                    "$websiteUrl:$websitePort/register?token=$token"
+                } else {
+                    "$websiteUrl/register?token=$token"
+                }
                 val emailContent = Chat.color("&aClick the following link to complete your registration: &e$registrationLink")
                 setText(emailContent.toString())
             }
