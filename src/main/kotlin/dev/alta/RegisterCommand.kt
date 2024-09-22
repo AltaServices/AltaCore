@@ -17,7 +17,7 @@ class RegisterCommand : CommandExecutor {
     }
 
     init {
-        AltaCore.instance.getCommand("register").executor = this
+        AltaCore.instance.getCommand("register")?.setExecutor(this)
     }
 
     override fun onCommand(sender: CommandSender, p1: Command, p2: String, args: Array<out String>): Boolean {

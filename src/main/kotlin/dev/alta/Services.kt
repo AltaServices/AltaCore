@@ -14,6 +14,7 @@ import javax.mail.internet.*
  * @author Cupoftea
  * @date 9/21/2024
  */
+
 object Services {
     fun registerPlayer(uuid: UUID, email: String) {
         val token = generateToken()

@@ -1,4 +1,4 @@
 name: AltaCore
 version: '1.0'
 main: dev.alta.AltaCore
-api-version: '1.8'
+api-version: '1.13'
