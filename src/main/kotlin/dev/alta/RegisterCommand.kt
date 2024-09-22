@@ -16,22 +16,21 @@ class RegisterCommand : CommandExecutor {
                 : Pattern = Pattern.compile("^[a-zA-Z0-9_!#$%&’*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
     }
 
-    init {
-        AltaCore.instance.getCommand("register")?.setExecutor(this)
-    }
-
-    override fun onCommand(sender: CommandSender, p1: Command, p2: String, args: Array<out String>): Boolean {
+    override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if (sender !is Player) {
+            sender.sendMessage("This command can only be used by players.")
             return true
         }
 
-        val player = sender as Player
+        val player = sender
 
-        val mail = args.pop(0)?: run {
+        if (args.isEmpty()) {
             player.sendColored("&cMissing argument.")
-            player.sendColored("&cCorrect usage: &e/register <mail>")
+            player.sendColored("&cCorrect usage: &e/register <email>")
             return true
         }
+
+        val mail = args[0]
 
         if (!EMAIL_VALIDATE_PATTERN.matcher(mail).matches()) {
             player.sendColored("&cThat is not a valid email address.")
@@ -39,16 +38,14 @@ class RegisterCommand : CommandExecutor {
             return true
         }
 
-        Services.registerPlayer(player.uniqueId, mail)
+        try {
+            Services.registerPlayer(player.uniqueId, mail)
+            player.sendColored("&aRegistration process started. Please check your email.")
+        } catch (e: Exception) {
+            player.sendColored("&cAn error occurred during registration. Please try again later.")
+            e.printStackTrace()
+        }
 
         return true
     }
-}
-
-fun Array<out String>.pop(index: Int): String? {
-    if (index < size - 1) {
-        return null
-    }
-
-    return this[index]
 }

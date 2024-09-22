@@ -3,6 +3,8 @@ package dev.alta
 import dev.alta.database.Mongo
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
+import com.mongodb.MongoSecurityException
+import com.mongodb.MongoTimeoutException
 
 /**
  * @author TastyCake
@@ -31,12 +33,23 @@ class AltaCore : JavaPlugin() {
         try {
             Mongo.initialize(this)
         } catch (e: Exception) {
-            logger.severe("Failed to initialize database connection: ${e.message}")
+            when (e) {
+                is com.mongodb.MongoSecurityException -> {
+                    logger.severe("Failed to authenticate with MongoDB. Please check your username and password in the config.yml file.")
+                }
+                is com.mongodb.MongoTimeoutException -> {
+                    logger.severe("Timed out while connecting to MongoDB. Please check your database URI and ensure the server is running.")
+                }
+                else -> {
+                    logger.severe("Failed to initialize database connection: ${e.message}")
+                }
+            }
+            logger.severe("Disabling plugin due to database connection failure.")
             server.pluginManager.disablePlugin(this)
             return
         }
 
-        RegisterCommand()
+        getCommand("register")?.setExecutor(RegisterCommand())
 
         logger.info("AltaCore has been enabled!")
     }

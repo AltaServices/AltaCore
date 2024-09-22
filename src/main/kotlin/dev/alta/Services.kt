@@ -7,8 +7,8 @@ import org.bson.Document
 import org.bukkit.configuration.file.FileConfiguration
 import java.util.Properties
 import java.util.UUID
-import javax.mail.*
-import javax.mail.internet.*
+import jakarta.mail.*
+import jakarta.mail.internet.*
 
 /**
  * @author Cupoftea
@@ -69,7 +69,7 @@ object Services {
                     "$websiteUrl/register?token=$token"
                 }
                 val emailContent = Chat.color("&aClick the following link to complete your registration: &e$registrationLink")
-                setText(emailContent.toString())
+                setText(emailContent)
             }
 
             Transport.send(message)

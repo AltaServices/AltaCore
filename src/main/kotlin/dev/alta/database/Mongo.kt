@@ -16,8 +16,16 @@ object Mongo {
             ?: throw IllegalStateException("Database URI is not set in the config")
         val databaseName = plugin.config.getString("database.name")
             ?: throw IllegalStateException("Database name is not set in the config")
+        val username = plugin.config.getString("database.username")
+        val password = plugin.config.getString("database.password")
 
-        client = MongoClients.create(uri)
+        val connectionString = if (username.isNullOrEmpty() || password.isNullOrEmpty()) {
+            uri
+        } else {
+            "mongodb://$username:$password@${uri.removePrefix("mongodb://")}"
+        }
+
+        client = MongoClients.create(connectionString)
         database = client.getDatabase(databaseName)
         plugin.logger.info("Successfully connected to MongoDB database")
     }

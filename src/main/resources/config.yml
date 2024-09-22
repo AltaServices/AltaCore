@@ -8,8 +8,10 @@ smtp:
 
 #db config
 database:
-  uri: mongodb://username:password@localhost:27017
+  uri: mongodb://localhost:27017
   name: altacore
+  username:
+  password:
 
 # Website configuration
 website:

@@ -18,9 +18,10 @@ repositories {
 
 dependencies {
     compileOnly("org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("javax.mail:javax.mail-api:1.6.2")
+    implementation(kotlin("stdlib-jdk8"))
+    implementation("com.sun.mail:jakarta.mail:2.0.1")
     implementation("org.mongodb:mongodb-driver-sync:5.1.4")
+    implementation("com.sun.activation:jakarta.activation:2.0.1")
 }
 
 val targetJavaVersion = 17
@@ -30,6 +31,11 @@ kotlin {
 
 tasks.build {
     dependsOn("shadowJar")
+}
+
+tasks.shadowJar {
+    archiveClassifier.set("")
+    mergeServiceFiles()
 }
 
 tasks.processResources {
