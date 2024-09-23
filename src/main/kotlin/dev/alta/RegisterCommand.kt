@@ -40,7 +40,6 @@ class RegisterCommand : CommandExecutor {
 
         try {
             Services.registerPlayer(player, mail)
-            player.sendColored("&aRegistration process started. Please check your email.")
         } catch (e: Exception) {
             player.sendColored("&cAn error occurred during registration. Please try again later.")
             e.printStackTrace()
